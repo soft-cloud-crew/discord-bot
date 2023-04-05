@@ -24,6 +24,7 @@ async def on_ready():
     await client.change_presence( status = dis.Status.idle, activity = activity )
 
     print( 'logged in as {0.user}'.format( client ) )
+    await client.load_extension( 'help' )
     await client.load_extension( 'economia' )
     await client.tree.sync( )
 
