@@ -1,6 +1,8 @@
 
 db/*
 
+Musica/*
+
 .env
 
 __pycache__/*
