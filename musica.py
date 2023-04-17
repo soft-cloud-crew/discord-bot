@@ -48,11 +48,12 @@ class Musica(commands.Cog):
 
     async def current_end( self, error = None ):
         print(error) if error else None
-        nueva_cancion = self.queue.pop(0)
+        if len(self.queue): nueva_cancion = self.queue.pop(0)
+        else: return None
 
         #async with self.chan.typing:
         if nueva_cancion['source'] == 'yt':
-            source = await YTDLSource.from_url( nueva_cancion['query'], self.bot.loop )
+            source = await YTDLSource.from_url( nueva_cancion['query'] )
             title = source.title
         elif nueva_cancion['source'] == 'local':
             title = nueva_cancion['query']
