@@ -63,7 +63,7 @@ class Musica(commands.Cog):
         await self.chan.send( f'Reproduciendo: { title }' )
 
 
-    @commands.hybrid_group( fallback = 'local', help = 'Reproduce un archivo local \n por el momento no soporta fila' )
+    @commands.hybrid_group( fallback = 'local', help = 'Agrega un archivo local a la fila \n en caso de no estar reproduciendo nada comienza la fila' )
     async def play( self, ctx, query ):
         self.queue.append( { 'source':'local', 'query':query } )
         await ctx.send( f'La cancion { query } ha sido añadida a la cola.' )
@@ -73,14 +73,14 @@ class Musica(commands.Cog):
             await self.current_end()
 
 
-    @play.command( help = 'reproduce un video de yt \n por el momento no soporta fila' )
+    @play.command( help = 'Agrega un video de youtube (por id) a la fila \n en caso de no estar reproduciendo nada comienza la fila' )
     async def yt( self, ctx, query ):
+        self.queue.append( { 'source':'yt', 'query':query } )
+        await ctx.send( 'La cancion ha sido añadida a la cola.' )
+        self.chan = ctx.channel
 
-        async with ctx.typing():
-            player = await YTDLSource.from_url( query, self.bot.loop )
-            ctx.voice_client.play( player, after = lambda e: print(f'{e}') if e else None )
-
-        await ctx.send( f'Reproduciendo: { player.title }' )
+        if not self.voice or not self.voice.is_playing():
+            await self.current_end()
 
 
     @play.autocomplete( 'query' )
