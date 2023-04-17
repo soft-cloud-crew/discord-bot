@@ -41,15 +41,36 @@ class YTDLSource( discord.PCMVolumeTransformer ):
 class Musica(commands.Cog):
     def __init__( self, bot ):
         self.bot = bot
+        self.queue = []
+        self.voice = None
+        self.chan = None
 
 
-    @commands.hybrid_group( falback = 'local', help = 'Reproduce un archivo local \n por el momento no soporta fila' )
+    async def current_end( self, error = None ):
+        print(error) if error else None
+        nueva_cancion = self.queue.pop(0)
+
+        #async with self.chan.typing:
+        if nueva_cancion['source'] == 'yt':
+            source = await YTDLSource.from_url( nueva_cancion['query'], self.bot.loop )
+            title = source.title
+        elif nueva_cancion['source'] == 'local':
+            title = nueva_cancion['query']
+            source = discord.PCMVolumeTransformer( discord.FFmpegPCMAudio(f'Musica/{ title }' ) )
+        after_func = lambda e: asyncio.run( self.current_end( e ) )
+        self.voice.play( source, after = after_func )
+
+        await self.chan.send( f'Reproduciendo: { title }' )
+
+
+    @commands.hybrid_group( fallback = 'local', help = 'Reproduce un archivo local \n por el momento no soporta fila' )
     async def play( self, ctx, query ):
+        self.queue.append( { 'source':'local', 'query':query } )
+        await ctx.send( f'La cancion { query } ha sido añadida a la cola.' )
+        self.chan = ctx.channel
 
-        source = discord.PCMVolumeTransformer( discord.FFmpegPCMAudio(f'Musica/{ query }' ) )
-        ctx.voice_client.play( source, after = lambda e: print(f'{e}') if e else None )
-
-        await ctx.send( f'Reproduciendo: { query }' )
+        if not self.voice or not self.voice.is_playing():
+            await self.current_end()
 
 
     @play.command( help = 'reproduce un video de yt \n por el momento no soporta fila' )
@@ -71,7 +92,7 @@ class Musica(commands.Cog):
     @play.before_invoke
     async def conectado( self, ctx ):
         if ctx.voice_client is None and ctx.author.voice:
-            await ctx.author.voice.channel.connect()
+            self.voice = await ctx.author.voice.channel.connect()
         elif ctx.voice_client is None:
             await ctx.send( 'Usuario no conectado a un canal de voz.' )
             raise commands.CommandError('Author not connected to VC.')
