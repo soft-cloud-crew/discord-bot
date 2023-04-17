@@ -85,7 +85,7 @@ class Musica(commands.Cog):
 
     @play.autocomplete( 'query' )
     async def play_autocomplete( self, interaction, curr ):
-        return [discord.app_commands.Choice(name=x,value=x) for x in glob.glob(f'./Musica/{ curr }*')][:25]
+        return [discord.app_commands.Choice(name=x[7:],value=x[7:]) for x in glob.glob(f'Musica/{ curr }*')][:25]
 
 
     @yt.before_invoke
