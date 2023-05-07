@@ -39,6 +39,7 @@ class SccHelp( commands.HelpCommand ):
         title = 'Comandos del bot del SCC'
         description = '''
             Bot personal del SCC con funcionalidad de economia entre otras cosas.
+            (en desarrollo)
             '''
         helpEmbed = discord.Embed( title=title, description=description, color=0xffdc98 )
 
