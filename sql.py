@@ -22,34 +22,34 @@ class Sql( commands.Cog ):
     def put_default( self, att, table, uuid, insert=False ):
         default = self.defaults[table][att]
         if insert:
-            self.cur.execute( 'INSERT INTO ? values(?)', ( table, uuid ) )
-        self.cur.execute( 'UPDATE ? set ? = ? WHERE uuid IS ?;', ( table, att, default , uuid ) )
+            self.cur.execute( 'INSERT INTO %s values(?)' % (table,), ( uuid, ) )
+        self.cur.execute( 'UPDATE %s set ? = ? WHERE uuid IS ?;' % (table,), ( att, default , uuid ) )
         self.con.commit( )
 
 
     def getAtt( self, att: str, table: str , uuid: int ):
-        query = 'SELECT ? FROM ? WHERE uuid IS ?;'
+        query = 'SELECT %s FROM %s WHERE uuid IS ?'
 
-        res = self.cur.execute( query, ( att, table, uuid ) ).fetchone( )
+        res = self.cur.execute( query % ( att, table ), ( uuid, ) ).fetchone( )
 
         if res == None:
             self.put_default( att, table, uuid, True )
-            res = self.cur.execute( query, ( att, table, uuid ) ).fetchone( )
+            res = self.cur.execute( query % ( att, table ), ( uuid, ) ).fetchone( )
 
         elif res[0] == None:
             self.put_default( att, table, uuid )
-            res = self.cur.execute( query, ( att, table, uuid ) ).fetchone( )
+            res = self.cur.execute( query % ( att, table), ( uuid, ) ).fetchone( )
 
         return res[0]
 
 
     def modifyAtt( self, att: str, table: str, uuid: int, value ):
-        res = self.cur.execute( 'SELECT * FROM ? WHERE uuid IS ?', ( table, uuid ) ).fetchone( )
+        res = self.cur.execute( 'SELECT * FROM %s WHERE uuid IS ?' % (table,), ( uuid, ) ).fetchone( )
 
         if res == None:
             self.put_default( att, table, uuid, True)
 
-        self.cur.execute( 'UPDATE ? SET ? = ? WHERE uuid IS ?;', ( table, att, value, uuid ) )
+        self.cur.execute( 'UPDATE %s SET ? = ? WHERE uuid IS ?;' % (table,), ( att, value, uuid ) )
         self.con.commit( )
 
 
