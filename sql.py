@@ -42,7 +42,7 @@ class Sql( commands.Cog ):
         return res[0]
 
 
-    def modifyAtt( self, att: str, value, table: str, uuid: int ):
+    def modifyAtt( self, att: str, table: str, uuid: int, value ):
         res = self.cur.execute( 'SELECT * FROM ? WHERE uuid IS ?', ( table, uuid ) ).fetchone( )
 
         if res == None:
