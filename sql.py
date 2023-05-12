@@ -15,6 +15,7 @@ class Sql( commands.Cog ):
 
 
     def add_default( self, att, table, default):
+        if table not in self.defaults       : self.defaults[table] = {}
         self.defaults[table][att] = default
 
 
