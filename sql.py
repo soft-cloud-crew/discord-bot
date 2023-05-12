@@ -33,7 +33,7 @@ class Sql( commands.Cog ):
         res = self.cur.execute( query, ( att, table, uuid ) ).fetchone( )
 
         if res == None:
-            self.put_default( att: str, table: str, uuid, True )
+            self.put_default( att, table, uuid, True )
             res = self.cur.execute( query, ( att, table, uuid ) ).fetchone( )
 
         elif res[0] == None:
@@ -49,7 +49,7 @@ class Sql( commands.Cog ):
         if res == None:
             self.put_default( att, table, uuid, True)
 
-        self.cur.execute( 'UPDATE ? SET ? = ? WHERE uuid IS ?;' ( table, att, value, uuid ) )
+        self.cur.execute( 'UPDATE ? SET ? = ? WHERE uuid IS ?;', ( table, att, value, uuid ) )
         self.con.commit( )
 
 

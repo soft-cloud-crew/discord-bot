@@ -25,6 +25,7 @@ async def on_ready():
 
     print( 'logged in as {0.user}'.format( client ) )
     await client.load_extension( 'help' )
+    await client.load_extension( 'sql' )
     await client.load_extension( 'musica' )
     await client.load_extension( 'economia' )
     await client.tree.sync( )
