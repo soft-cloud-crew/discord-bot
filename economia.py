@@ -13,25 +13,6 @@ def has_admin():
 class Economia( commands.Cog ):
     def __init__( self, bot ):
         self.bot = bot
-        self.con = sqlite3.connect( "db/economia.db" )
-        self.cur = self.con.cursor( )
-
-    def cog_unload( self ):
-        self.con.close( )
-
-    def getMoney( self, uuid: int ):
-        res = self.cur.execute( "SELECT dinero FROM economia WHERE uuid IS ?;", ( uuid, ) ).fetchone( )
-        if res == None:
-            self.cur.execute( "INSERT INTO economia VALUES(?,?)", ( uuid, 0 ) )
-            self.con.commit( )
-            res = self.cur.execute( "SELECT dinero FROM economia WHERE uuid IS ?;", ( uuid, ) ).fetchone( )
-        return res[0] 
-
-    def modifyMoney( self, uuid: int, amount: int ):
-        dinero = self.getMoney( uuid ) + amount
-        self.cur.execute( "UPDATE economia SET dinero = ? WHERE uuid IS ?;", ( dinero, uuid ) )
-        self.con.commit( )
-
 
     @commands.hybrid_group( fallback = "get", help = "Ve tu dinero actual o el de otra persona." )
     async def eco( self, ctx, miembro: dis.Member = None ):
