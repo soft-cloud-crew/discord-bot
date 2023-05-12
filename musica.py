@@ -58,7 +58,7 @@ class Musica(commands.Cog):
         elif nueva_cancion['source'] == 'local':
             title = nueva_cancion['query']
             source = discord.PCMVolumeTransformer( discord.FFmpegPCMAudio(f'Musica/{ title }' ) )
-        after_func = lambda e: asyncio.run( self.current_end( e ) )
+        after_func = lambda e: asyncio.run_coroutine_threadsafe( self.current_end( e ), self.bot.loop ).result( )
         self.voice.play( source, after = after_func )
 
         await self.chan.send( f'Reproduciendo: { title }' )
