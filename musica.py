@@ -44,20 +44,28 @@ class Musica(commands.Cog):
         self.queue = []
         self.voice = None
         self.chan = None
+        self.looped = 0
 
 
     async def current_end( self, error = None ):
         print(error) if error else None
         if len(self.queue): nueva_cancion = self.queue.pop(0)
-        else: return None
+        else: await self.chan.send( 'La fila ha acabado' )
+
+        if self.looped == 1:
+            self.queue.append( nueva_cancion )
+        elif self.looped == 2:
+            self.queue.insert( 0, nueva_cancion )
 
         #async with self.chan.typing:
         if nueva_cancion['source'] == 'yt':
             source = await YTDLSource.from_url( nueva_cancion['query'] )
             title = source.title
+
         elif nueva_cancion['source'] == 'local':
             title = nueva_cancion['query']
             source = discord.PCMVolumeTransformer( discord.FFmpegPCMAudio(f'Musica/{ title }' ) )
+
         after_func = lambda e: asyncio.run_coroutine_threadsafe( self.current_end( e ), self.bot.loop ).result( )
         self.voice.play( source, after = after_func )
 
@@ -84,9 +92,24 @@ class Musica(commands.Cog):
             await self.current_end()
 
 
+    @play.command( help = 'Activa o desactiva la funcion de bucle \n las opciones son: desactivar bucle de toda la cola y bucle de la canción' )
+    async def loop( self, ctx, loop: int ):
+        if loop is not in ( 0, 1, 2 ):
+            await ctx.send( 'Opcion no reconocida.' )
+
+        else:
+            self.looped = loop
+            txt = ('desactivado','fila','canción')
+            await ctx.send( f'Se ha cambiado la opción de bucle a: { txt[loop] }' )
+
+
     @play.autocomplete( 'query' )
     async def play_autocomplete( self, interaction, curr ):
         return [discord.app_commands.Choice(name=x[7:],value=x[7:]) for x in glob.glob(f'Musica/{ curr }*')][:25]
+
+    @loop.autocomplete( 'loop' )
+    async def loop_autocomplete( self, interaction, curr ):
+        return [discord.app_commands.Choice(name=x[0],value=x[1]) for x in (('desactivado',0),('fila',1),('canción',2))]
 
 
     @yt.before_invoke
