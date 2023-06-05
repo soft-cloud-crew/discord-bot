@@ -28,6 +28,7 @@ async def on_ready():
     await client.load_extension( 'sql' )
     await client.load_extension( 'musica' )
     await client.load_extension( 'economia' )
+    await client.load_extension( 'utils' )
     await client.tree.sync( )
 
 
