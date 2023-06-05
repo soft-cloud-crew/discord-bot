@@ -94,7 +94,7 @@ class Musica(commands.Cog):
 
     @play.command( help = 'Activa o desactiva la funcion de bucle \n las opciones son: desactivar bucle de toda la cola y bucle de la canción' )
     async def loop( self, ctx, loop: int ):
-        if loop is not in ( 0, 1, 2 ):
+        if loop not in ( 0, 1, 2 ):
             await ctx.send( 'Opcion no reconocida.' )
 
         else:
