@@ -11,6 +11,7 @@ class Utils( commands.Cog ):
 
 
     @commands.hybrid_group( fallback='crear' )
+    @commands.has_permission( manage_messages=True )
     async def cuestionario( self, ctx, titulo ):
         
         while True:
@@ -36,6 +37,7 @@ class Utils( commands.Cog ):
 
 
     @cuestionario.command( )
+    @commands.has_permission( manage_messages=True )
     async def cerrar( self, ctx, codigo ):
         
         if codigo not in self.cuestionarios:
