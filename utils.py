@@ -56,6 +56,11 @@ class Utils( commands.Cog ):
         await ctx.send( embed=embed )
 
 
+    @responder.autocomplete( 'codigo' )
+    async def responder_autocomplete( self, interaction, curr ):
+        return [discord.app_commands.Choice(name=self.cuestionarios[x]['title'],value=x) for x in self.cuestionarios][:25]
+
+
 
 async def setup( bot ):
 
