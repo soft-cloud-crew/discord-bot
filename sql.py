@@ -53,6 +53,11 @@ class Sql( commands.Cog ):
         self.con.commit( )
 
 
+    def setAtts( self, table, *values ):
+        self.cur.execute( 'INSERT INTO %s values(%s)' % (table, ('?,'*len(values))[:-1] ), values )
+        self.con.commit( )
+
+
 
 async def setup( bot ):
     await bot.add_cog( Sql( bot ) )
