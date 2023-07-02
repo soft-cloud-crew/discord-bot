@@ -45,26 +45,32 @@ class Musica(commands.Cog):
         self.voice = None
         self.chan = None
         self.looped = 0
+        self.current = None
 
 
     async def current_end( self, error = None ):
         print(error) if error else None
-        if len(self.queue): nueva_cancion = self.queue.pop(0)
-        else: await self.chan.send( 'La fila ha acabado' )
 
-        if self.looped == 1:
-            self.queue.append( nueva_cancion )
-        elif self.looped == 2:
-            self.queue.insert( 0, nueva_cancion )
+        if self.looped == 1 and self.current:
+            self.queue.append( self.current )
+        elif self.looped == 2 and self.current:
+            self.queue.insert( 0, self.current )
+
+        if len(self.queue): self.current = self.queue.pop(0)
+        else:
+            await self.chan.send( 'La fila ha acabado' )
+            self.current = None
 
         #async with self.chan.typing:
-        if nueva_cancion['source'] == 'yt':
-            source = await YTDLSource.from_url( nueva_cancion['query'] )
+        if self.current['source'] == 'yt':
+            source = await YTDLSource.from_url( self.current['query'] )
             title = source.title
+            self.current['title'] = title
 
         elif nueva_cancion['source'] == 'local':
-            title = nueva_cancion['query']
+            title = self.current['query']
             source = discord.PCMVolumeTransformer( discord.FFmpegPCMAudio(f'Musica/{ title }' ) )
+            self.current['title'] = title.split('/')[-1]
 
         after_func = lambda e: asyncio.run_coroutine_threadsafe( self.current_end( e ), self.bot.loop ).result( )
         self.voice.play( source, after = after_func )
