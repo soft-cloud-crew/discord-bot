@@ -86,10 +86,16 @@ class Musica(commands.Cog):
         else: await ctx.send( 'No se esta reproduciendo nada en este momento.' )
 
 
+    @commands.hybrid_command( hidden=True )
+    async def set_verbose( self, ctx, value: bool = False ):
+        self.verbose = value
+        await ctx.send( f'set verbose value to: {value}', ephemeral=True )
+
+
     @commands.hybrid_group( fallback = 'local', help = 'Agrega un archivo local a la fila \n en caso de no estar reproduciendo nada comienza la fila' )
     async def play( self, ctx, query ):
         self.queue.append( { 'source':'local', 'query':query } )
-        await ctx.send( f'La cancion { query } ha sido añadida a la cola.' )
+        await ctx.send( f'La cancion { query } ha sido añadida a la cola.' ,ephemeral=not self.verbose )
         self.chan = ctx.channel
 
         if not self.voice or not self.voice.is_playing():
@@ -99,7 +105,7 @@ class Musica(commands.Cog):
     @play.command( help = 'Agrega un video de youtube (por id) a la fila \n en caso de no estar reproduciendo nada comienza la fila' )
     async def yt( self, ctx, query ):
         self.queue.append( { 'source':'yt', 'query':query } )
-        await ctx.send( 'La cancion ha sido añadida a la cola.' )
+        await ctx.send( 'La cancion ha sido añadida a la cola.', ephemeral=not self.verbose )
         self.chan = ctx.channel
 
         if not self.voice or not self.voice.is_playing():
