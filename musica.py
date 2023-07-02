@@ -80,6 +80,12 @@ class Musica(commands.Cog):
             if self.verbose: await self.chan.send( f'Reproduciendo: { title }' )
 
 
+    @commands.hybrid_command( help='Resume la sesion' )
+    async def resume( self, ctx ):
+        if self.queue:
+            await self.current_end()
+
+
     @commands.hybrid_command( aliases=['np'], help='Muestra la cancion que se esta reproduciendo' )
     async def playing( self, ctx ):
         if self.current: await ctx.send( f'Reproduciendo: { self.current["title"] }' )
