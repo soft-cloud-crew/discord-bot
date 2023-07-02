@@ -46,6 +46,7 @@ class Musica(commands.Cog):
         self.chan = None
         self.looped = 0
         self.current = None
+        self.verbose = False
 
 
     async def current_end( self, error = None ):
@@ -76,7 +77,13 @@ class Musica(commands.Cog):
             after_func = lambda e: asyncio.run_coroutine_threadsafe( self.current_end( e ), self.bot.loop ).result( )
             self.voice.play( source, after = after_func )
 
-            await self.chan.send( f'Reproduciendo: { title }' )
+            if self.verbose: await self.chan.send( f'Reproduciendo: { title }' )
+
+
+    @commands.hybrid_command( aliases=['np'], help='Muestra la cancion que se esta reproduciendo' )
+    async def playing( self, ctx ):
+        if self.current: await ctx.send( f'Reproduciendo: { self.current["title"] }' )
+        else: await ctx.send( 'No se esta reproduciendo nada en este momento.' )
 
 
     @commands.hybrid_group( fallback = 'local', help = 'Agrega un archivo local a la fila \n en caso de no estar reproduciendo nada comienza la fila' )
