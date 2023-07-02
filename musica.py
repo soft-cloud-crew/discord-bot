@@ -62,20 +62,21 @@ class Musica(commands.Cog):
             self.current = None
 
         #async with self.chan.typing:
-        if self.current['source'] == 'yt':
+        if self.current and self.current['source'] == 'yt':
             source = await YTDLSource.from_url( self.current['query'] )
             title = source.title
             self.current['title'] = title
 
-        elif nueva_cancion['source'] == 'local':
+        elif self.current and nueva_cancion['source'] == 'local':
             title = self.current['query']
             source = discord.PCMVolumeTransformer( discord.FFmpegPCMAudio(f'Musica/{ title }' ) )
             self.current['title'] = title.split('/')[-1]
 
-        after_func = lambda e: asyncio.run_coroutine_threadsafe( self.current_end( e ), self.bot.loop ).result( )
-        self.voice.play( source, after = after_func )
+        if self.current:
+            after_func = lambda e: asyncio.run_coroutine_threadsafe( self.current_end( e ), self.bot.loop ).result( )
+            self.voice.play( source, after = after_func )
 
-        await self.chan.send( f'Reproduciendo: { title }' )
+            await self.chan.send( f'Reproduciendo: { title }' )
 
 
     @commands.hybrid_group( fallback = 'local', help = 'Agrega un archivo local a la fila \n en caso de no estar reproduciendo nada comienza la fila' )
