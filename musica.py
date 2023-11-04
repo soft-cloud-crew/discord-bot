@@ -118,6 +118,13 @@ class Musica(commands.Cog):
             await self.current_end()
 
 
+    @play.command( help = "Para la cancion que se este reproduciendo actualmunte." )
+    async def skip( self, ctx ):
+
+        self.voice.stop()
+        await ctx.send( "La cancion se ha saltado.", ephemeral=not self.verbose )
+
+
     @play.command( help = 'Activa o desactiva la funcion de bucle \n las opciones son: desactivar bucle de toda la cola y bucle de la canción' )
     async def loop( self, ctx, loop: int ):
         if loop not in ( 0, 1, 2 ):
