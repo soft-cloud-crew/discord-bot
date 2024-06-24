@@ -11,7 +11,9 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
-test = True
+test = bool( os.getenv( 'TEST' ) )
+minecraft = bool( os.getenv( 'MINECRAFT_SERVER_MODULE' ) )
+uinput = bool( os.getenv( 'GAMEPAD_MODULE' ) )
 
 intents = dis.Intents.default()
 intents.members = True ; intents.message_content = True
@@ -29,7 +31,8 @@ async def on_ready():
     await client.load_extension( 'musica' )
     await client.load_extension( 'economia' )
     await client.load_extension( 'utils' )
-    await client.load_extension( 'mine' )
+    if minecraft: await client.load_extension( 'mine' )
+    if uinput: await client.load_extension( 'gamepad' )
     await client.tree.sync( )
 
 
