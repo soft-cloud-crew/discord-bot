@@ -33,6 +33,7 @@ async def on_ready():
     await client.load_extension( 'utils' )
     if minecraft: await client.load_extension( 'mine' )
     if uinput: await client.load_extension( 'gamepad' )
+    await client.load_extension( 'translate' )
     await client.tree.sync( )
 
 
