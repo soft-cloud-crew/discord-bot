@@ -50,6 +50,7 @@ class Musica(commands.Cog):
 
 
     async def current_end( self, error = None ):
+        idiomas = self.bot.get_cog( 'Translator' )
         print(error) if error else None
 
         if self.looped == 1 and self.current:
@@ -59,7 +60,7 @@ class Musica(commands.Cog):
 
         if len(self.queue): self.current = self.queue.pop(0)
         else:
-            await self.chan.send( 'La fila ha acabado' )
+            await self.chan.send( idiomas.get_translatable( idiomas.lang, ["musica"], "fila_terminado" ) )
             self.current = None
 
         #async with self.chan.typing:
@@ -77,7 +78,9 @@ class Musica(commands.Cog):
             after_func = lambda e: asyncio.run_coroutine_threadsafe( self.current_end( e ), self.bot.loop ).result( )
             self.voice.play( source, after = after_func )
 
-            if self.verbose: await self.chan.send( f'Reproduciendo: { title }' )
+            if self.verbose:
+                reproduciendo = idiomas.get_translatable( idiomas.lang, ["musica"], "cancion_reproduciendo" )
+                await self.chan.send( reproduciendo.format( self.current["title"] ) )
 
 
     @commands.hybrid_command( help='Resume la sesion' )
@@ -88,8 +91,12 @@ class Musica(commands.Cog):
 
     @commands.hybrid_command( aliases=['np'], help='Muestra la cancion que se esta reproduciendo' )
     async def playing( self, ctx ):
-        if self.current: await ctx.send( f'Reproduciendo: { self.current["title"] }' )
-        else: await ctx.send( 'No se esta reproduciendo nada en este momento.' )
+        idiomas = self.bot.get_cog( "Translator" )
+        if self.current:
+            reproduciendo = idiomas.get_translatable( idiomas.lang, ["musica"], "cancion_reproduciendo" )
+            await self.chan.send( reproduciendo.format( self.current["title"] ) )
+        else:
+            await ctx.send( idiomas.get_translatable( idiomas.lang, ["musica"], "fila_vacia" ) )
 
 
     @commands.hybrid_command( hidden=True )
@@ -100,8 +107,10 @@ class Musica(commands.Cog):
 
     @commands.hybrid_group( fallback = 'local', help = 'Agrega un archivo local a la fila \n en caso de no estar reproduciendo nada comienza la fila' )
     async def play( self, ctx, query ):
+        idiomas = self.bot.get_cog( "Translator" )
         self.queue.append( { 'source':'local', 'query':query } )
-        await ctx.send( f'La cancion { query } ha sido añadida a la cola.' ,ephemeral=not self.verbose )
+        text = idiomas.get_translatable( idiomas.lang, ["musica"], "fila_local_añadir" )
+        await ctx.send( text.format(query) ,ephemeral=not self.verbose )
         self.chan = ctx.channel
 
         if not self.voice or not self.voice.is_playing():
@@ -110,8 +119,10 @@ class Musica(commands.Cog):
 
     @play.command( help = 'Agrega un video de youtube (por id) a la fila \n en caso de no estar reproduciendo nada comienza la fila' )
     async def yt( self, ctx, query ):
+        idiomas = self.bot.get_cog( "Translator" )
         self.queue.append( { 'source':'yt', 'query':query } )
-        await ctx.send( 'La cancion ha sido añadida a la cola.', ephemeral=not self.verbose )
+        text = idiomas.get_translatable( idiomas.lang, ["musica"], "fila_yt_añadir" )
+        await ctx.send( text ,ephemeral=not self.verbose )
         self.chan = ctx.channel
 
         if not self.voice or not self.voice.is_playing():
@@ -120,20 +131,25 @@ class Musica(commands.Cog):
 
     @play.command( help = "Para la cancion que se este reproduciendo actualmunte." )
     async def skip( self, ctx ):
+        idiomas = self.bot.get_cog( "Translator" )
 
         self.voice.stop()
-        await ctx.send( "La cancion se ha saltado.", ephemeral=not self.verbose )
+        text = idiomas.get_translatable( idiomas.lang, ["musica"], "fila_saltar" )
+        await ctx.send( text, ephemeral=not self.verbose )
 
 
     @play.command( help = 'Activa o desactiva la funcion de bucle \n las opciones son: desactivar bucle de toda la cola y bucle de la canción' )
     async def loop( self, ctx, loop: int ):
+        idiomas = self.bot.get_cog( "Translator" )
         if loop not in ( 0, 1, 2 ):
-            await ctx.send( 'Opcion no reconocida.' )
+            text = idiomas.get_translatable( idiomas.lang, ["musica"], "bucle_no_opcion" )
+            await ctx.send( text )
 
         else:
             self.looped = loop
-            txt = ('desactivado','fila','canción')
-            await ctx.send( f'Se ha cambiado la opción de bucle a: { txt[loop] }' )
+            txt = idiomas.get_translatable( idiomas.lang, ["musica"], "bucle_opcion_"+str(loop) )
+            text = idiomas.get_translatable( idiomas.lang, ["musica"], "bucle_cambiado" )
+            await ctx.send( text.format( txt ) )
 
 
     @play.autocomplete( 'query' )
@@ -142,7 +158,9 @@ class Musica(commands.Cog):
 
     @loop.autocomplete( 'loop' )
     async def loop_autocomplete( self, interaction, curr ):
-        return [discord.app_commands.Choice(name=x[0],value=x[1]) for x in (('desactivado',0),('fila',1),('canción',2))]
+        idiomas = self.bot.get_cog( "Translator" )
+        opcion = lambda x: idiomas.get_translatable( idiomas.lang, ["musica"], "bucle_opcion_" + str( x ) )
+        return [discord.app_commands.Choice(name=opcion(x),value=x) for x in range(3)]
 
 
     @yt.before_invoke
@@ -151,7 +169,9 @@ class Musica(commands.Cog):
         if ctx.voice_client is None and ctx.author.voice:
             self.voice = await ctx.author.voice.channel.connect()
         elif ctx.voice_client is None:
-            await ctx.send( 'Usuario no conectado a un canal de voz.' )
+            idiomas = self.bot.get_cog( "Translator" )
+            text = idiomas.get_translatable( idiomas.lang, ["musica"], "conectar_no_usuario" )
+            await ctx.send( text )
             raise commands.CommandError('Author not connected to VC.')
 
 

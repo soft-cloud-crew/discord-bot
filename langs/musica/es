@@ -1,0 +1,24 @@
+#fila_terminado
+La fila ha acabado.
+#fila_vacia
+No se esta reproduciendo nada en este momento.
+#fila_local_añadir
+la cancion {0} ha sido añadida a la cola.
+#fila_yt_añadir
+La cancion ha sido añadida a la cola.
+#fila_saltar
+La cancion se ha saltado.
+#bucle_no_opcion
+Opcion no reconocida.
+#bucle_cambiado
+Se ha cambiado la opcion de bucle a: {0}
+#bucle_opcion_0
+desactivado
+#bucle_opcion_1
+fila
+#bucle_opcion_2
+canción
+#conectar_no_usuario
+Usuario no conectado a un canal de voz.
+#cancion_reproduciendo
+Reproduciendo: {0}
