@@ -53,6 +53,16 @@ class Translator( commands.Cog ):
             self.__importar_lang__( langfile )
 
 
+    @commands.hybrid_command()
+    @commands.has_permissions( manage_messages=True )
+    async def idioma( self, ctx, idioma ):
+        if idioma in self.langs:
+            self.lang = idioma
+            await ctx.send( self.get_translatable( self.lang, ["traducibles"], "cambio_exito" ) )
+        else:
+            await ctx.send( self.get_translatable( self.lang, ["traducibles"], "cambio_fallo" ) )
+
+
 
 async def setup( bot ):
     await bot.add_cog( Translator( bot ) )
