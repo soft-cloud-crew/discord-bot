@@ -1,0 +1,21 @@
+#bot_titulo
+Comandos del bot del SCC
+#bot_descripcion
+Bot personal del SCC con funcionalidad de economia entre otras cosas.
+(en desarrollo)
+#categoria_nula
+Misceláneo
+#categoria_titulo
+Ayuda del grupo: {0}
+#categoria_descripcion
+s${0} {1}
+{2}
+#comando_titulo
+Ayuda del comando: {0}
+#comando_descripcion
+s${0} {1}
+{2}
+#comando_alias
+alias
+#comando_sin_alias
+Ninguno

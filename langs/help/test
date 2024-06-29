@@ -1,0 +1,24 @@
+#bot_titulo
+help/bot-titulo
+#bot_descripcion
+help/bot-descripcion
+#categoria_nula
+help/categoria_nula
+#categoria_titulo
+help/categoria_titulo 0: {0}
+#categoria_descripcion
+help/categoria_descripcion
+0: {0}
+1: {1}
+2: {2}
+#comando_titulo
+help/comando_titulo 0: {0}
+#comando_descripcion
+help/comando_descripcion
+0: {0}
+1: {1}
+2: {2}
+#comando_alias
+help/comando_alias
+#comando_sin_alias
+help/comando_sin_alias
