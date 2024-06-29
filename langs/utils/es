@@ -1,0 +1,16 @@
+#tiempo_titulo_actual
+Tiempo actual:
+#tiempo_titulo
+Tiempo introducido:
+#cuestionario_creado
+Se ha creado el cuestionario con codigo: {0}
+#cuestionario_fallo
+No se ha podido crear el cuestionario.
+#cuestionario_no_existe
+El cuestionario no existe.
+#cuestionario_respuesta
+Tu respuesta ha sido agregada
+#cuestionario_respuestas
+Cuestionario creado el {0}
+
+{1}
