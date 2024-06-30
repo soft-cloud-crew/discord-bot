@@ -26,7 +26,7 @@ class TimeMenu(discord.ui.View):
         org_embed = interaction.message.embeds[0]
         time = int( org_embed.footer.text ) + add_time
 
-        title = idiomas.get_translatable( idiomas.lang, ["utils"], "tiempo_titulo" )
+        title = idiomas.traducir( ["utils"], "tiempo_titulo" )
         description = time_text( time )
 
         embed = discord.Embed( title=title, description=description )
@@ -123,7 +123,7 @@ class Utils( commands.Cog ):
 
         self.cuestionarios[codigo] = { 'title':titulo, 'date':int( time.time( ) ), 'ans':{ } }
 
-        text = idiomas.get_translatable( idiomas.lang, ["utils"], "cuestionario_creado" )
+        text = idiomas.traducir( ["utils"], "cuestionario_creado" )
         await ctx.send( embed=discord.Embed( title=titulo, description=text.format(codigo) ) )
 
 
@@ -132,14 +132,14 @@ class Utils( commands.Cog ):
         idiomas = self.bot.get_cog( 'Translator' )
         
         if codigo not in self.cuestionarios:
-            text = idiomas.get_translatable( idiomas.lang, ["utils"], "cuestionario_no_existe" )
+            text = idiomas.traducir( ["utils"], "cuestionario_no_existe" )
             await ctx.send( text, ephemeral=True )
             return
 
         ans = { 'answer':respuesta, 'date':int( time.time( ) ) }
         self.cuestionarios[codigo]['ans'][ctx.author.id] = ans
 
-        text = idiomas.get_translatable( idiomas.lang, ["utils"], "cuestionario_respuesta" )
+        text = idiomas.traducir( ["utils"], "cuestionario_respuesta" )
         await ctx.send( text, ephemeral=True )
 
 
@@ -149,7 +149,7 @@ class Utils( commands.Cog ):
         idiomas = self.bot.get_cog( 'Translator' )
         
         if codigo not in self.cuestionarios:
-            text = idiomas.get_translatable( idiomas.lang, ["utils"], "cuestionario_no_existe" )
+            text = idiomas.traducir( ["utils"], "cuestionario_no_existe" )
             await ctx.send( text, ephemeral=True )
             return
 
@@ -158,7 +158,7 @@ class Utils( commands.Cog ):
         title = cuestionario['title']
         answers = map(lambda x: (x, cuestionario['ans'][x]), cuestionario['ans'])
         answers = map(lambda x: f'<@!{ x[0] }> <t:{ x[1]["date"] }:T> - { x[1]["answer"] }', answers)
-        text = idiomas.get_translatable( idiomas.lang, ["utils"], "cuestionario_respuestas" )
+        text = idiomas.traducir( ["utils"], "cuestionario_respuestas" )
         description = text.format( cuestionario["date"], '\n'.join(answers) )
 
         embed = discord.Embed( title=title, description=description )
@@ -176,7 +176,7 @@ class Utils( commands.Cog ):
         idiomas = self.bot.get_cog( 'Translator' )
         current_time = int( time.time( ) )
 
-        title = idiomas.get_translatable( idiomas.lang, ["utils"], "tiempo_titulo_actual" )
+        title = idiomas.traducir( ["utils"], "tiempo_titulo_actual" )
         description = time_text( current_time )
 
         embed = discord.Embed( title=title, description=description )

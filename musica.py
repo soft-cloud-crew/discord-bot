@@ -60,7 +60,7 @@ class Musica(commands.Cog):
 
         if len(self.queue): self.current = self.queue.pop(0)
         else:
-            await self.chan.send( idiomas.get_translatable( idiomas.lang, ["musica"], "fila_terminado" ) )
+            await self.chan.send( idiomas.traducir( ["musica"], "fila_terminado" ) )
             self.current = None
 
         #async with self.chan.typing:
@@ -79,7 +79,7 @@ class Musica(commands.Cog):
             self.voice.play( source, after = after_func )
 
             if self.verbose:
-                reproduciendo = idiomas.get_translatable( idiomas.lang, ["musica"], "cancion_reproduciendo" )
+                reproduciendo = idiomas.traducir( ["musica"], "cancion_reproduciendo" )
                 await self.chan.send( reproduciendo.format( self.current["title"] ) )
 
 
@@ -93,10 +93,10 @@ class Musica(commands.Cog):
     async def playing( self, ctx ):
         idiomas = self.bot.get_cog( "Translator" )
         if self.current:
-            reproduciendo = idiomas.get_translatable( idiomas.lang, ["musica"], "cancion_reproduciendo" )
+            reproduciendo = idiomas.traducir( ["musica"], "cancion_reproduciendo" )
             await self.chan.send( reproduciendo.format( self.current["title"] ) )
         else:
-            await ctx.send( idiomas.get_translatable( idiomas.lang, ["musica"], "fila_vacia" ) )
+            await ctx.send( idiomas.traducir( ["musica"], "fila_vacia" ) )
 
 
     @commands.hybrid_command( hidden=True )
@@ -109,7 +109,7 @@ class Musica(commands.Cog):
     async def play( self, ctx, query ):
         idiomas = self.bot.get_cog( "Translator" )
         self.queue.append( { 'source':'local', 'query':query } )
-        text = idiomas.get_translatable( idiomas.lang, ["musica"], "fila_local_añadir" )
+        text = idiomas.traducir( ["musica"], "fila_local_añadir" )
         await ctx.send( text.format(query) ,ephemeral=not self.verbose )
         self.chan = ctx.channel
 
@@ -121,7 +121,7 @@ class Musica(commands.Cog):
     async def yt( self, ctx, query ):
         idiomas = self.bot.get_cog( "Translator" )
         self.queue.append( { 'source':'yt', 'query':query } )
-        text = idiomas.get_translatable( idiomas.lang, ["musica"], "fila_yt_añadir" )
+        text = idiomas.traducir( ["musica"], "fila_yt_añadir" )
         await ctx.send( text ,ephemeral=not self.verbose )
         self.chan = ctx.channel
 
@@ -134,7 +134,7 @@ class Musica(commands.Cog):
         idiomas = self.bot.get_cog( "Translator" )
 
         self.voice.stop()
-        text = idiomas.get_translatable( idiomas.lang, ["musica"], "fila_saltar" )
+        text = idiomas.traducir( ["musica"], "fila_saltar" )
         await ctx.send( text, ephemeral=not self.verbose )
 
 
@@ -142,13 +142,13 @@ class Musica(commands.Cog):
     async def loop( self, ctx, loop: int ):
         idiomas = self.bot.get_cog( "Translator" )
         if loop not in ( 0, 1, 2 ):
-            text = idiomas.get_translatable( idiomas.lang, ["musica"], "bucle_no_opcion" )
+            text = idiomas.traducir( ["musica"], "bucle_no_opcion" )
             await ctx.send( text )
 
         else:
             self.looped = loop
-            txt = idiomas.get_translatable( idiomas.lang, ["musica"], "bucle_opcion_"+str(loop) )
-            text = idiomas.get_translatable( idiomas.lang, ["musica"], "bucle_cambiado" )
+            txt = idiomas.traducir( ["musica"], "bucle_opcion_"+str(loop) )
+            text = idiomas.traducir( ["musica"], "bucle_cambiado" )
             await ctx.send( text.format( txt ) )
 
 
@@ -159,7 +159,7 @@ class Musica(commands.Cog):
     @loop.autocomplete( 'loop' )
     async def loop_autocomplete( self, interaction, curr ):
         idiomas = self.bot.get_cog( "Translator" )
-        opcion = lambda x: idiomas.get_translatable( idiomas.lang, ["musica"], "bucle_opcion_" + str( x ) )
+        opcion = lambda x: idiomas.traducir( ["musica"], "bucle_opcion_" + str( x ) )
         return [discord.app_commands.Choice(name=opcion(x),value=x) for x in range(3)]
 
 
@@ -170,7 +170,7 @@ class Musica(commands.Cog):
             self.voice = await ctx.author.voice.channel.connect()
         elif ctx.voice_client is None:
             idiomas = self.bot.get_cog( "Translator" )
-            text = idiomas.get_translatable( idiomas.lang, ["musica"], "conectar_no_usuario" )
+            text = idiomas.traducir( ["musica"], "conectar_no_usuario" )
             await ctx.send( text )
             raise commands.CommandError('Author not connected to VC.')
 

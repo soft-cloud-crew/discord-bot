@@ -26,12 +26,19 @@ class Translator( commands.Cog ):
         temp[key] = value
 
 
-    def get_translatable( self, lang, path, key ):
+    def traducible( self, lang, path, key ):
         temp = self.langs[lang]
 
         for x in path:
             temp = temp[x]
         return temp[key]
+
+
+    def traducir( self, path, key, id_usuario = None ):
+        if not id_usuario: lang = self.lang
+        else: lang = self.lang
+
+        return self.traducible( lang, path, key )
 
 
     def __importar_lang__( self, file ):
@@ -58,9 +65,9 @@ class Translator( commands.Cog ):
     async def idioma( self, ctx, idioma ):
         if idioma in self.langs:
             self.lang = idioma
-            await ctx.send( self.get_translatable( self.lang, ["traducibles"], "cambio_exito" ) )
+            await ctx.send( self.traducir( ["traducibles"], "cambio_exito" ) )
         else:
-            await ctx.send( self.get_translatable( self.lang, ["traducibles"], "cambio_fallo" ) )
+            await ctx.send( self.traducir( ["traducibles"], "cambio_fallo" ) )
 
 
 
