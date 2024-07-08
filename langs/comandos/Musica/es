@@ -1,0 +1,19 @@
+#resume_brief
+Resume la sesion.
+#resume_help
+Resume la fila desde la ultima cancion en caso de que haya terminado a la mitad.
+#resume_usage
+
+#playing_brief
+Muestra la cancion actual.
+#playing_help
+Muestra la cancion que se esta reproduciendo actualmente en la fila.
+#playing_usage
+
+#play_brief
+Agrega un archivo local a la fila
+#play_help
+Agrega un archivo local a la fila
+en caso de que el bot no este reproduciendo nada comienza la fila
+#play_usage
+<Archivo>

@@ -1,0 +1,20 @@
+#yt_brief
+Agrega un link de youtube a la fila
+#yt_help
+Agrega un link de youtube (youtu.be/ youtube.com/watch?v=) o id a la fila
+al igual que la variante local, inicia la fila en caso de no reproducir nada
+#yt_usage
+<Link>
+#skip_brief
+Para la cancion actual
+#skip_help
+Salta la cancion 
+#skip_usage
+
+#loop_brief
+Activa o desactiva el bucle
+#loop_help
+Cambia la ocion de bucle en el reproductor
+las opciones son: desactivar bucle, bucle de la cola, bucle de la canción
+#loop_usage
+<opcion>
