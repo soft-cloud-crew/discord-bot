@@ -1,0 +1,16 @@
+#tiempo_titulo_actual
+utils/tiempo_titulo_actual
+#tiempo_titulo
+utils/tiempo_titulo
+#cuestionario_creado
+utils/cuestionario_creado 0: {0}
+#cuestionario_fallo
+utils/cuestionario_fallo
+#cuestionario_no_existe
+utils/cuestionario_no_existe
+#cuestionario_respuesta
+utils/cuestionario_respuesta
+#cuestionario_respuestas
+utils/cuestionario_respuestas
+0: {0}
+1: {1}

@@ -1,0 +1,24 @@
+#fila_terminado
+musica/fila_terminado
+#fila_vacia
+musica/fila_vacia
+#fila_local_añadir
+musica/fila_local_añadir
+#fila_yt_añadir
+musica/fila_yt_añadir
+#fila_saltar
+musica/fila_saltar
+#bucle_no_opcion
+musica/bucle_no_opcion
+#bucle_cambiado
+musica/bucle_cambiado 0: {0}
+#bucle_opcion_0
+musica/bucle_opcion_0
+#bucle_opcion_1
+musica/bucle_opcion_1
+#bucle_opcion_2
+musica/bucle_opcion_2
+#conectar_no_usuario
+musica/conectar_no_usuario
+#cancion_reproduciendo
+musica/cancion_reproduciendo 0: {0}
