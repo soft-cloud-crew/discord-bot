@@ -2,13 +2,19 @@ import discord
 from discord.ext import commands
 
 class SccHelp( commands.HelpCommand ):
+    def c_info( self, i, c, info ):
+        if c.parent = None: return i.traducir( ["comandos", c.cog_name], c.name + "_" + info )
+        else: return i.traducir( ["comandos", c.cog_name, c.root_parent.name], c.name + "_" + info )
+
+
     async def send_command_help( self, command ):
         idiomas = self.context.bot.get_cog( 'Translator' )
+        c = lambda x: self.c_info( idiomas, command, x )
 
         title = idiomas.traducir( ["help"], "comando_titulo" )
         title = title.format( command.name )
         description = idiomas.traducir( ["help"], "comando_descripcion" )
-        description = description.format( command.qualified_name, command.usage, command.help )
+        description = description.format( command.qualified_name, c( "usage" ) , c( "help" ) )
         helpEmbed = discord.Embed( title=title, description=description, color=0xffdc98 )
 
         aliases = ', '.join( command.aliases )
@@ -22,15 +28,16 @@ class SccHelp( commands.HelpCommand ):
 
     async def send_group_help( self, group ):
         idiomas = self.context.bot.get_cog( 'Translator' )
+        c = lambda x,y: self.c_info( idiomas, y, x )
 
         title = idiomas.traducir( ["help"], "categoria_titulo" )
         title = title.format( group.qualified_name )
         description = idiomas.traducir( ["help"], "categoria_descripcion" )
-        description = description.format( group.qualified_name, group.usage, group.help )
+        description = description.format( group.qualified_name, c("usage",group), c("help","usage") )
         helpEmbed = discord.Embed( title=title, description=description, color=0xffdc98 )
 
         commandList = await self.filter_commands( group.commands, sort=True )
-        commandList = map( lambda x: f"{ x.name }: { x.short_doc }", commandList )
+        commandList = map( lambda x: f"{ x.name }: { c('brief',x) }", commandList )
         commandList = '\n'.join( commandList )
         helpEmbed.add_field( name = 'Comandos', value = commandList )
 
