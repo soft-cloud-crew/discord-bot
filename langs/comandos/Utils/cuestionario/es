@@ -1,0 +1,13 @@
+#responder_brief
+Responde a un cuestionario.
+#responder_help
+Agrega una respuesta a un cuestionario creado usando el codigo o la funcion de autocompletar.
+En caso de ya haber respondido se sobreescribe tu anterior respuesta.
+#responder_usage
+<Codigo>
+#cerrar_brief
+Cierra el cuestionario.
+#cerrar_help
+Cierra el cuestionario en base al codigo, y luego muestra las respuestas con la fecha en las que fueron introducidas.
+#cerrar_usage
+<Codigo>

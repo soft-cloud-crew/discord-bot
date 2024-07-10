@@ -1,0 +1,14 @@
+#cuestionario_brief
+Crea un cuestionario.
+#cuestionario_help
+Crea un cuestionario que los usuarios podran responder, para luego cerrarlo y ver las respuestas.
+#cuestionario_usage
+<Titulo>
+#tiempo_brief
+Muestra el tiempo actual.
+#tiempo_help
+Muestra un embed con el tiempo actual formateado para poderse ver en discord.
+Puedes cambiarlo para mostrar una fecha diferente usando los botones abajo del mensaje.
+los formatos son: relativo (dentro de 1 hora), hora corta (13:33), fecha (15/06/2019) fecha larga (martes, 9 de julio de 2024)
+#tiempo_usage
+
